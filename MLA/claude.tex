@@ -1,0 +1,387 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{longtable}
+\usepackage{booktabs}
+
+\title{Machine Learning 2024 Project Midterm Report}
+\author{Do Duc Truong, Tran Minh Duc, Pham Hai Nam}
+
+\begin{document}
+
+\maketitle
+
+\section{Part A: Machine Learning Models}
+
+\subsection{k-Nearest Neighbor (KNN)}
+
+\subsubsection{Step 2}
+To observe how the accuracy of predictions changes with different numbers of nearest neighbors, we vary the value of k to (k = 1, 6, 11, 16, 21, 26).
+
+The accuracy on validation data for $k \in \{1, 6, 11, 16, 21, 26\}$ is as follows:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{media/image1.png}
+\caption{Accuracy for different k values}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{media/image2.png}
+\caption{Graph of accuracy vs k}
+\end{figure}
+
+We use $k^* = 11$ for \textit{knn\_imputed\_by\_user} and the final test accuracy is:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{media/image3.png}
+\caption{Test accuracy for knn\_imputed\_by\_user}
+\end{figure}
+
+\subsubsection{Step 3}
+The fundamental premise of item-based collaborative filtering is that if a diagnostic question A has the same number of correct and incorrect responses from other users as question B, then the correctness of question A from a particular user is equal to that of question B.
+
+The accuracy on validation data for $k \in \{1, 6, 11, 16, 21, 26\}$ is as follows:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{media/image4.png}
+\caption{Accuracy for different k values (item-based)}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{media/image5.png}
+\caption{Graph of accuracy vs k (item-based)}
+\end{figure}
+
+We use $k^* = 21$ for \textit{knn\_imputed\_by\_item} and the final test accuracy is as follows:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image6.png}
+\caption{Test accuracy for knn\_imputed\_by\_item}
+\end{figure}
+
+\subsubsection{Step 4}
+The test performance between user- and item-collaborative filtering is quite similar, with user-based performing slightly better. Some reasons that can be considered to lead to this outcome:
+
+\begin{itemize}
+\item Students might have consistent response patterns across questions
+\item There could be clear groups of students with similar knowledge levels or learning styles
+\item The number of students might be smaller than the number of questions, making user similarity more reliable
+\end{itemize}
+
+\subsection{Item Response Theory (IRT)}
+
+\subsubsection{Step 2}
+Let n = total number of students and m = total number of questions. The log-likelihood is derived as follows under the Naive Bayes assumption:
+
+\begin{align*}
+p(C \mid \theta,\beta) &= p\left( c_{11},c_{12},\ldots,c_{nm} \mid \theta,\beta \right) \\
+&= \prod_{i = 1}^{n}\prod_{j = 1}^{m} p\left( c_{ij} = 1 \mid \theta_{i},\beta_{j} \right)^{c_{ij}} \cdot \left( 1 - p\left( c_{ij} = 1 \mid \theta_{i},\beta_{j} \right) \right)^{\left( 1 - c_{ij} \right)} \\
+&= \prod_{i = 1}^{n}\prod_{j = 1}^{m}\sigma\left( \theta_{i} - \beta_{j} \right)^{c_{ij}} \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right)^{\left( 1 - c_{ij} \right)} \\
+\log(p(C \mid \theta,\beta)) &= \log\left( \prod_{i = 1}^{n}\prod_{j = 1}^{m}\sigma\left( \theta_{i} - \beta_{j} \right)^{c_{ij}} \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right)^{\left( 1 - c_{ij} \right)} \right) \\
+&= \sum_{i = 1}^{n}\sum_{j = 1}^{m} c_{ij} \cdot \log\left( \sigma\left( \theta_{i} - \beta_{j} \right) \right) + \left( 1 - c_{ij} \right) \cdot \log\left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right)
+\end{align*}
+
+Now we calculate the partial derivative of the log-likelihood with respect to each $\theta_i$ and $\beta_j$:
+
+\begin{align*}
+\frac{\partial\log(p(C \mid \theta,\beta))}{\partial\theta_{i}} &= \sum_{j = 1}^{m}\frac{c_{ij}}{\sigma\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\sigma\left( \theta_{i} - \beta_{j} \right)}{\partial\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\left( \theta_{i} - \beta_{j} \right)}{\partial\theta_{i}} \\
+&+ \frac{1 - c_{ij}}{1 - \sigma\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right)}{\partial\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\left( \theta_{i} - \beta_{j} \right)}{\partial\theta_{i}} \\
+&= \sum_{j = 1}^{m}\frac{c_{ij}}{\sigma\left( \theta_{i} - \beta_{j} \right)} \cdot \sigma\left( \theta_{i} - \beta_{j} \right) \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right) \cdot 1 \\
+&+ \frac{1 - c_{ij}}{1 - \sigma\left( \theta_{i} - \beta_{j} \right)} \cdot - \sigma\left( \theta_{i} - \beta_{j} \right) \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right) \cdot 1 \\
+&= \sum_{j = 1}^{m} c_{ij} \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right) - \left( 1 - c_{ij} \right) \cdot \sigma\left( \theta_{i} - \beta_{j} \right) \\
+&= \sum_{j = 1}^{m} c_{ij} - \sigma\left( \theta_{i} - \beta_{j} \right)
+\end{align*}
+
+\begin{align*}
+\frac{\partial\log(p(C \mid \theta,\beta))}{\partial\beta_{j}} &= \sum_{i = 1}^{n}\frac{c_{ij}}{\sigma\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\sigma\left( \theta_{i} - \beta_{j} \right)}{\partial\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\left( \theta_{i} - \beta_{j} \right)}{\partial\beta_{j}} \\
+&+ \frac{1 - c_{ij}}{1 - \sigma\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right)}{\partial\left( \theta_{i} - \beta_{j} \right)} \cdot \frac{\partial\left( \theta_{i} - \beta_{j} \right)}{\partial\beta_{j}} \\
+&= \sum_{i = 1}^{n}\frac{c_{ij}}{\sigma\left( \theta_{i} - \beta_{j} \right)} \cdot \sigma\left( \theta_{i} - \beta_{j} \right) \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right) \cdot - 1 \\
+&+ \frac{1 - c_{ij}}{1 - \sigma\left( \theta_{i} - \beta_{j} \right)} \cdot - \sigma\left( \theta_{i} - \beta_{j} \right) \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right) \cdot - 1 \\
+&= \sum_{i = 1}^{n} - c_{ij} \cdot \left( 1 - \sigma\left( \theta_{i} - \beta_{j} \right) \right) + \left( 1 - c_{ij} \right) \cdot \sigma\left( \theta_{i} - \beta_{j} \right) \\
+&= \sum_{i = 1}^{n} - c_{ij} + \sigma\left( \theta_{i} - \beta_{j} \right)
+\end{align*}
+
+\subsubsection{Step 3}
+To achieve a stable training curve, we adjust the learning rate and the number of iterations as follows:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{media/image7.png}
+\caption{Learning rate and iterations}
+\end{figure}
+
+Negative log-likelihood in each iteration for the training set:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{media/image8.png}
+\caption{Negative log-likelihood for training set}
+\end{figure}
+
+Negative log-likelihood in each iteration for the validation set:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{media/image9.png}
+\caption{Negative log-likelihood for validation set}
+\end{figure}
+
+\subsubsection{Step 4}
+Plot for the probability of getting correct response vs theta for 3 questions:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{media/image10.png}
+\caption{Probability of correct response vs theta for 3 questions}
+\end{figure}
+
+\subsubsection{Step 5}
+From this graph, we observe that when theta is small, the probability of correct responses is low, and as theta increases, the probability of correct responses also increases. This makes sense because theta represents a student's ability. Students with lower ability are less likely to answer correctly, while those with higher ability are more likely to do so. The three curves in the graph roughly follow an S-shape, as we used the sigmoid function $\sigma(\theta - \beta)$ to calculate the probability. As $\theta$ increases, the input to the sigmoid, $\theta - \beta$, also increases. Since the sigmoid is a monotonically increasing function with an S-shape, the probability follows a similar pattern. The vertical displacement of the three curves could represent different levels of question difficulty. For easier questions, students of all abilities are more likely to get them right, whereas for harder questions, students of all abilities are more likely to get them wrong.
+
+\subsection{Ensemble Learning}
+
+In this section, we implemented a bagging ensemble method using the Item Response Theory (IRT) algorithm to enhance the accuracy and stability of our base models. The process consists of the following steps:
+
+\subsubsection{Step 1: Data Resampling}
+We created three new training sets by resampling from the original dataset. Each of these sets was generated by randomly selecting samples with replacement, ensuring that they contained the same number of samples as the original dataset.
+
+\subsubsection{Step 2: Model Predictions}
+For each resampled training set, we computed the predictions $y_i$ using the respective training set i.
+
+\subsubsection{Step 3: Averaging Predictions}
+We then calculated the average prediction as follows:
+\[\mathbf{y} = \frac{1}{3}\sum_{i = 1}^{3}{\mathbf{y}_{i}}\]
+
+Given that this task involves binary classification (determining whether student i answered question j correctly), we applied a threshold of 0.5 to derive the final prediction:
+\[\mathbf{y}_{bagged} = I\left( \frac{1}{3}\sum_{i = 1}^{3}{\mathbf{y}_{i}} > 0.5 \right)\]
+
+\subsubsection{Step 4: Performance Evaluation}
+Finally, we compared the ensemble predictions with the validation data to calculate the accuracy of the ensemble model.
+
+\subsection{Final Results}
+
+The hyperparameters used included 280 iterations and a learning rate of 0.0005.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{media/image11.png}
+\caption{Final results}
+\end{figure}
+
+\subsubsection{Performance Assessment}
+The validation accuracy for the ensemble was slightly lower than that of the individual base models, while the test accuracy remained unchanged. It is worth noting that the gap between validation and test accuracy for the ensemble was smaller compared to the original model, indicating that the ensemble approach provided greater prediction stability.
+
+While bagging typically helps average out various sources of noise in the data, thus reducing variance, it does not alter the bias or Bayes error. Theoretically, using an ensemble model should lead to improved accuracy; however, in our case, the use of only three base models may not have been sufficient to achieve a significant boost in performance. Consequently, our test accuracy did not see any improvement.
+
+\subsection{Matrix Factorization}
+
+\subsubsection{Step 1: Singular value decomposition (SVD)}
+
+We implemented SVD to factorize the response matrix into two smaller matrices representing latent factors for students and questions. For the latent dimension k, we tried five distinct values: $k = \{7, 14, 21, 56, 105\}$.
+
+The validation accuracies for each k value are as follows:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image12.png}
+\caption{Validation accuracies for SVD}
+\end{figure}
+
+The best k for SVD was found to be 7, and both the test and validation accuracy were approximately 0.66.
+
+We also plot the results in the following figure:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image13.png}
+\caption{The validation accuracy versus the number of latent factors for the SVD method.}
+\end{figure}
+
+This graph shows how the validation accuracy changes with the number of latent factors for the SVD method. The accuracy is highest at the lowest number of factors (around $k = 7$) and steadily decreases as the number of factors increases. This suggests that for SVD, simpler models (with fewer latent factors) perform better on the validation set, possibly due to better generalization.
+
+\subsubsection{Step 2: Alternating least square (ALS)}
+
+In this step, the ALS is implemented using stochastic gradient descent (SGD) by first initializing and iteratively updating the user (U) and question (Z) matrices randomly through the function \textit{update\_u\_z()}. Then we use this function in the \textit{als()} function to run the entire process. We also use the same set of latent dimensions k in this step $k = \{7, 14, 21, 56, 105\}$. We also use different values for the learning rate lr $lr = \{0.01, 0.1, 0.25, 0.5\}$ to look for promising convergence time and the validation accuracy decreased without any fluctuation (unlike some larger learning rates). The $lr$ value we choose is 0.1.
+
+The validation accuracies for each k value are as follows:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image14.png}
+\caption{The ALS validation accuracies for each k values}
+\end{figure}
+
+The best k for ALS was found to be 56, with the validation accuracy to be nearly 0.69 and the test accuracy to be approximately 0.693.
+
+The following figure shows the relationship between the validation accuracy and the number of latent factors (k) for the ALS method.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image15.png}
+\caption{The validation accuracies versus the number of latent factors for the ALS.}
+\end{figure}
+
+The peak accuracy appears to occur around $k = 56$, with a validation accuracy of approximately 0.6905. After this peak, there's a slight decrease in accuracy as k increases to 100, but the decline is minimal.
+
+We also have the following figure to present the training losses and validation losses in each iteration of the best k:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image16.png}
+\caption{The training losses and validation losses in each iteration of $k = 56$.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image17.png}
+\caption{The training and validation loss versus the number of iterations for the ALS method.}
+\end{figure}
+
+This figure illustrates how the training and validation losses change with the number of iterations in the machine learning model. The training loss (blue line) starts very high, and consistently decreases as the number of iterations increases, indicating that the model is learning from the training data. The rate of decrease is rapid initially and then becomes more gradual.
+
+The validation loss (orange line) starts much lower, around 1,500, and also decreases, but at a much slower rate compared to the training loss. It seems to remain unchanged after about 5,000 iterations, with only minimal changes afterwards. This suggests that the model's performance on unseen data stabilizes relatively early in the training process.
+
+The continuing decrease in training loss, coupled with the relatively stable validation loss, indicates that the model is improving its fit to the training data without significant overfitting to the validation set.
+
+\subsubsection{Step 3: Comparison and Limitations}
+
+1. Comparison of SVD and ALS
+
+We compared the results of SVD and ALS by plotting the validation accuracies for both methods against the number of latent factors (k). This comparison is visualized in the following figure:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{media/image18.png}
+\caption{The validation accuracy versus the number of latent factors for both SVD (Singular Value Decomposition) and ALS methods.}
+\end{figure}
+
+This figure compares the validation accuracy of two methods, SVD (Singular Value Decomposition) and ALS (Alternating Least Squares), across different numbers of latent factors.
+
+The ALS method consistently outperforms SVD across all numbers of latent factors. The ALS line shows a general upward trend as the number of latent factors increases, with a slight dip around 20 factors. It reaches its peak around 60 factors and then plateaus.
+
+The SVD line shows a downward trend as the number of latent factors increases, starting at its highest point with 10 factors and declining steadily.
+
+For both methods, the validation accuracy stays within a relatively narrow range (approximately 0.645 to 0.69), suggesting that changing the number of latent factors has a limited impact on overall performance.
+
+2. Limitation of Matrix Factorization
+
+\begin{itemize}
+\item Handling of Missing Data: In the SVD implementation, we filled in missing values using the average of the current item. This approach may introduce bias, especially if the missing data is not randomly distributed.
+\item Cold Start Problem: Matrix factorization methods may struggle with new users or items that have no or very few ratings, as there isn't enough information to accurately place them in the latent space.
+\item Interpretability: The latent factors discovered by these methods are not always easily interpretable, making it challenging to explain why certain predictions are made.
+\item Scalability: As the number of users and items grows, the computational cost of these methods can increase significantly, especially for larger values of k.
+\item Assumption of Linearity: These methods assume that the interaction between user and item factors is linear, which may not always hold true in real-world scenarios.
+\item Temporal Dynamics: Standard matrix factorization doesn't account for changes in user preferences or item characteristics over time, which could be relevant in an educational context where student knowledge evolves.
+\end{itemize}
+
+\section{Part B: Algorithm Modification}
+
+Based on the results from Part A, in Part B, we chose the Item Response Theory (IRT) algorithm to extend and improve prediction accuracy.
+
+\subsection{Identify the modification you are making and why it is expected to improve performance}
+
+\subsubsection{Extension 1: Add parameter $\alpha_j$ to describe the discriminative power of the question}
+
+In the original model, there is a simplified assumption that the probability of answering correctly depends only on two parameters:
+
+\begin{itemize}
+\item $\theta_i$: the ability of student i
+\item $\beta_j$: the difficulty of question j
+\end{itemize}
+
+However, assuming that all questions are equally discriminative may not hold true in practice. Therefore, we decided to introduce the parameter $\alpha_j$ to describe the discriminative power of each question.
+
+Figure 5 in the Figures/Charts section illustrates how different values of $\alpha$ affect the probability of answering correctly. When $x$ is negative, the blue line is lower than the red line; when $x$ is positive, the blue line is higher than the red line. This indicates that students with lower ability are less likely to answer highly discriminative questions correctly, and vice versa.
+
+We add $\alpha$ to the model, compute the derivative of the log-likelihood function with respect to $\alpha_j$, and apply gradient descent on $\alpha$ similarly to $\theta$ and $\beta$ to optimize the log-likelihood function. Additionally, we constrain $\alpha$ to the range (0,2) since this is a more realistic range as suggested by Columbia Public Health. For further details, refer to the IRT theory.
+
+\subsubsection{Extension 2: Add a hyperparameter c describing the probability of guessing the correct answer}
+
+We assume that all questions are multiple-choice with 4 options (as in the example diagnostic question provided in the materials). Given that students may guess when they do not know the answer, we decided to add a hyperparameter $c$ to the model. After tuning, the optimal value of $c$ is 0.25.
+
+After this extension, our probability function becomes:
+
+\[P(c_{ij} | \theta_i, \beta_j) = c + [1 - c] \times sigmoid(\alpha_j(\theta_i - \beta_j))\]
+
+This extended model introduces two additional factors: the discriminative power of questions and the chance of students guessing, adding complexity and better capturing the characteristics of the dataset. Therefore, we expect our extended model to improve optimization and achieve higher test accuracy.
+
+\subsection{Evaluate the accuracy of the algorithm}
+
+Our hypothesis is that adding parameters $\alpha$ and $c$ will improve performance because it increases the model's complexity, allowing it to capture more characteristics of the dataset. To test this hypothesis, we will implement the modified model as described earlier and run it on the dataset to evaluate its performance. (The code for this section can be found in \textbackslash part a\textbackslash part2 irt.py).
+
+We chose three models to compare the performance of the modified algorithm: the original IRT model, the modified IRT model with $c = 0$ (representing no random guessing), and the modified IRT model with $c = 0.25$ (representing a 25\% chance of answering a question correctly through random guessing).
+
+For a set of 9 different hyperparameter combinations, which consist of loop iterations $\{100, 150, 200\}$ and learning rates $\{0.0025, 0.001, 0.0005\}$, we find the best validation accuracy each model can achieve. The validation accuracies are summarized in the table below:
+
+\begin{table}[htbp]
+\centering
+\caption{Validation accuracies for different models and hyperparameters}
+\begin{tabular}{@{}cccccccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{100 iterations} & \multicolumn{3}{c}{150 iterations} & \multicolumn{3}{c}{200 iterations} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(l){8-10}
+learning rate & original IRT & \begin{tabular}[c]{@{}c@{}}modified IRT,\\ c = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}modified IRT,\\ c = 0.25\end{tabular} & original IRT & \begin{tabular}[c]{@{}c@{}}modified IRT,\\ c = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}modified IRT,\\ c = 0.25\end{tabular} & original IRT & \begin{tabular}[c]{@{}c@{}}modified IRT,\\ c = 0\end{tabular} & \begin{tabular}[c]{@{}c@{}}modified IRT,\\ c = 0.25\end{tabular} \\
+\midrule
+0.0025 & 0.70759 & 0.70745 & 0.70900 & 0.70590 & 0.70787 & 0.70759 & 0.70562 & 0.70687 & 0.70703 \\
+0.001 & 0.70745 & 0.70886 & 0.69433 & 0.70802 & 0.70844 & 0.70447 & 0.70675 & 0.70773 & 0.70900 \\
+0.0005 & 0.69785 & 0.69574 & 0.67556 & 0.70745 & 0.70590 & 0.68882 & 0.70745 & 0.70872 & 0.69461 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+As observed from the table, the maximum validation accuracy achieved by the modified model with $c = 0.25$ (0.70900) is higher than that achieved by the modified model with $c = 0$ (0.70886). Additionally, both modified models perform better than the original model, which achieved a maximum validation accuracy of 0.70802.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.3\textwidth]{media/image19.png}
+\includegraphics[width=0.3\textwidth]{media/image20.png}
+\includegraphics[width=0.3\textwidth]{media/image21.png}
+\caption{Comparison of model performances}
+\end{figure}
+
+This demonstrates that adding parameters $\alpha$ and $c$ contributes to performance improvement in some aspects.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.45\textwidth]{media/image22.png}
+\includegraphics[width=0.45\textwidth]{media/image23.png}
+\caption{Negative log-likelihood curves for training and validation sets}
+\end{figure}
+
+By examining the changes in negative log-likelihood across iterations for both the training and validation sets, we can observe the correspondence between the negative log-likelihood curves and validation accuracies for different models shown in the table. For instance, the negative log-likelihood of the modified model with $c = 0.25$ is lower than the other two curves for most iterations, indicating that the prediction likelihood of this modified model is higher. This is consistent with the model having the highest validation accuracy.
+
+The test accuracies for all three models also show improved performance for the modified model with $c = 0.25$.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{media/image24.png}
+\caption{Test accuracies for different models}
+\end{figure}
+
+However, the increase in validation accuracy is not substantial. For the modified model with $c = 0.25$, the slight improvement in accuracy suggests that our assumption of all questions being multiple-choice with four options may not have been ideal. Using a uniform $c$ value could have limited further improvements, as different questions may have varying numbers of answer choices.
+
+\subsection{Visualization}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{media/image25.png}
+\caption{Probability of correct response for different $\alpha$ values}
+\end{figure}
+
+\subsection{Limitations and potential improvements}
+
+Although our extended IRT model has achieved good validation and test accuracies, there are several limitations that affect its performance in certain situations. Below, we summarize these limitations and propose potential extensions to address them.
+
+\begin{itemize}
+\item \textbf{Assumption of Uniform Multiple-Choice Structure}: In this project, we lacked specific information on how many answer options were present for each multiple-choice question. We assumed that all questions had four options with only one correct answer, which might not always hold true. This assumption led us to set a uniform hyperparameter $c$ (with a value of 0.25 for four options), which could be inappropriate if different questions have varying numbers of answer choices. A poor choice of $c$ may cause underfitting when the data includes questions with different option counts. A possible improvement is to replace the scalar $c$ with a vector $\mathbf{c = (c_1, ..., c_{n(questions)})}$, where each $c_j$ represents the probability of guessing the correct answer for question $j$, thus accounting for variable numbers of options across questions.
+
+\item \textbf{Limited Generalization to Non-Multiple-Choice Questions}: All four models (KNN, IRT, NN, and ensemble) were trained on datasets containing only multiple-choice questions. As a result, these models are expected to perform poorly on datasets with other question types, such as short-answer or fill-in-the-blank questions. Instead of assuming a binary outcome (correct/incorrect) for all questions, one possible extension is to adapt the model for polytomous outcomes, where responses can receive partial credit and be rated on a scale (e.g., 1-5). This would allow the model to handle a wider range of question types more effectively.
+\item \textbf{Single Ability Value Limitation}: In our current IRT model, each student \textbf{i} is assigned a single ability score \textbf{θᵢ}. Predictions on whether a student can answer question \textbf{j} correctly depend solely on their overall ability (\mathbf{\theta ᵢ}), the difficulty (\mathbf{\beta ⱼ}), and the discriminative power \textbf{αⱼ} of the question. This approach fails to account for a student's varying ability across different subjects or topics. For example, a student may excel in most subjects but struggle with specific areas, such as multivariable calculus. Despite their overall high ability score \textbf{θᵢ}, the model may overestimate their likelihood of answering a calculus question correctly. To address this issue, we could introduce an ability matrix \textbf{θ}, where (\mathbf{\theta ᵢ,ₙ}) represents the student's ability in subject \textbf{n}. This matrix could be initialized using the provided metadata and refined based on the student's performance on subject-specific questions. By normalizing the matrix and incorporating it into the probability calculation, we could improve the model's ability to predict performance across diverse subjects. The updated probability for a student answering a question correctly would then be based on their specific abilities in the relevant subject areas, increasing the overall accuracy of the model.
+\end{itemize}
+\end{document}

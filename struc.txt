@@ -1,0 +1,13 @@
+Parent/                     
+│
+├── WPR/
+│   ├── project_1/
+│   │   ├── node_modules/         
+│   │
+│   ├── project_2/
+│   │   ├── node_modules/         
+│   │
+│   ├── project_3/
+│   │   ├── node_modules/         
+│   │
+└── .gitignore                  # Git ignore file

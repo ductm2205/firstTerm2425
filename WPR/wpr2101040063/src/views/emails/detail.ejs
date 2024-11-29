@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email System</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/form.css">
+</head>
+
+<body>
+  <div class="container">
+    <% if (user) { %>
+    <%- include('../partials/header', {user: user}) %>
+    <% } %>
+
+    <!-- Main content body -->
+    <div class="main-content">
+      <div class="email-detail">
+        <% if (error) { %>
+        <div class="error">
+          <%= error %>
+        </div>
+        <% } %>
+        <div class="page-name">
+          <h3><%= email.subject ? email.subject : "(no subject)" %></h3>
+          <div class="delete-box">
+            <div class="reply">
+              <a href="/compose/<%= user.id === email.sender_id ? email.receiver_id : email.sender_id  %>/<%= email.id %> "><button>Reply</button></a>
+            </div>
+            <div class="delete">
+              <button class="delete-btn" onclick="deleteEmail('<%= email.id %>')">Delete</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="email-sender">
+          <h5>Sent by: </h5>
+          <p><%= email.sender_name %></p>
+        </div>
+
+        <div class="email-receiver">
+          <h5>Sent to: </h5>
+          <p><%= email.receiver_name %></p>
+        </div>
+
+        <div class="email-body">
+          <h5>Body:</h5>
+          <p><%= email.body ? email.body : "(no body)" %></p>
+        </div>
+        <div class="email-attachment-path">
+          <h5>Attachment:</h5>
+          <a href="<%= email.attachment_path %>" download="email_attachment"><%= email.attachment_path%></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- script to call the delete method -->
+  <script src="/js/deleteEmail.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+1. db.books.find({pages: {$gt: 250}})
+2. db.books.find({author: "Mario Rossi"})
+3. db.books.find({price: {$lt: 20}, country: "IT"})
+4. db.books.updateMany({tags: "database"}, {$inc: {review_score: 0.2}})
+5. db.books.updateMany({tags: "mongodb"}, {$push: {tags: "NoSQL"}})
+6. db.books.updateMany({author: "Mario Rossi"}, {$set: {publisher: {name: 'Polito', city: 'Turin'}}})
+7. db.books.aggregate([
+  {$match: {tags: "database"}}, 
+  {$group: {
+    _id: null,
+    max_price: {$max: "$price"},
+    min_price: {$min: "$price"},
+    avg_price: {$avg: "$price"}
+  }}
+])
+8. db.books.countDocuments({author: "Mario Rossi"})

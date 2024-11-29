@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "name": "Nguyen Van A",
+    "username": "userA",
+    "password": "12345678",
+    "avatar": "",
+    "signupTime": "20/12/2024"
+  },
+  {
+    "id": "1",
+    "name": "Nguyen Van B",
+    "username": "userB",
+    "password": "12345678",
+    "avatar": "",
+    "signupTime": "21/12/2024"
+  }
+]

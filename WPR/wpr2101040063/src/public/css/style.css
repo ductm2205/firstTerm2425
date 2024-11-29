@@ -1,0 +1,204 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #333;
+  padding: 5px 10px;
+}
+
+.nav a:hover {
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+#signout_btn {
+  text-decoration: none;
+  color: red;
+  background-color: white;
+}
+
+#signout_btn:hover {
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: green;
+  margin-bottom: 10px;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Email list styles */
+.page-name {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.delete-btn {
+  background-color: #d14c4e;
+}
+.delete-btn:hover {
+  background-color: #8d191a;
+}
+
+.emai-div {
+  margin-top: 10px;
+}
+
+.email-list {
+  width: 100%;
+  border-collapse: collapse;
+  /* table-layout: fixed;  */
+}
+
+.email-list th,
+.email-list td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.email-list .checkbox {
+  width: 10px;
+}
+
+.email-list td:first-child {
+  width: 80px;
+}
+
+.email-list tbody tr:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+.email-list .sender {
+  width: 250px; /* Adjust as needed */
+}
+
+.email-list .subject {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0; /* This is important for text-overflow to work */
+}
+.email-list .sent_at {
+  width: 150px; /* Adjust as needed */
+  white-space: nowrap;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #007bff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.pagination a:hover {
+  background-color: #f8f9fa;
+}
+
+.pagination span {
+  margin: 0 5px;
+  padding: 5px 10px;
+  font-weight: bold;
+}
+
+/* Email detail */
+.email-detail {
+  padding: 10px;
+}
+
+.email-sender,
+.email-receiver,
+.email-body,
+.email-attachment-path {
+  margin-top: 10px; /* Adjust the value as needed */
+}
+
+/**/
+.delete-box {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}

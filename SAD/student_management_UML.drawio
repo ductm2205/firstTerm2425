@@ -1,0 +1,55 @@
+<mxfile host="Electron" modified="2024-10-24T10:29:47.066Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="06K7fvSqohV5GO3MVMd-" version="24.1.0" type="device">
+  <diagram name="Page-1" id="47jcnADeaR6ZICuzxgUF">
+    <mxGraphModel dx="1050" dy="629" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-14" value="Student" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="210" width="160" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-15" value="- id: int&lt;div&gt;- name: String&lt;/div&gt;&lt;div&gt;- age: int&lt;/div&gt;&lt;div&gt;- address: String&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-14">
+          <mxGeometry y="26" width="160" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-14">
+          <mxGeometry y="100" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-17" value="+ getId(): int&lt;div&gt;+ getName(): String&lt;/div&gt;&lt;div&gt;+ getAge(): String&lt;/div&gt;&lt;div&gt;+ getAddress(): String&lt;/div&gt;&lt;div&gt;+ setId(): void&lt;/div&gt;&lt;div&gt;+ setName(): void&lt;/div&gt;&lt;div&gt;+ setAge(): void&lt;/div&gt;&lt;div&gt;+ setAddress(): void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-14">
+          <mxGeometry y="108" width="160" height="132" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="u2mjZfabX3OD9H6z6XG1-22" target="u2mjZfabX3OD9H6z6XG1-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-22" value="StudentController" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="200" width="160" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-23" value="- model: Student&lt;div&gt;- view: StudentView&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-22">
+          <mxGeometry y="26" width="160" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-24" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-22">
+          <mxGeometry y="70" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-25" value="+ StudentController(model:&amp;nbsp; Student, view: StudentView)&lt;div&gt;+ getAllStudent(): List&amp;lt;Student&amp;gt;&lt;/div&gt;&lt;div&gt;+ getStudentById(...): Student&lt;/div&gt;&lt;div&gt;+ createNewStudent(...): boolean&lt;/div&gt;&lt;div&gt;+ updateStudent(...): boolean&lt;/div&gt;&lt;div&gt;+ deleteStudent(...): boolean&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-22">
+          <mxGeometry y="78" width="160" height="182" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-30" value="&lt;b&gt;StudentView&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="560" width="140" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-31" value="+ listAllStudentsPage(): void&lt;div&gt;+ listOneStudentsPage(): void&lt;br&gt;&lt;div&gt;+ createStudentPage(): void&lt;/div&gt;&lt;div&gt;+ updateStudentPage(): void&lt;/div&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="u2mjZfabX3OD9H6z6XG1-30">
+          <mxGeometry y="26" width="140" height="144" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-34" value="" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="u2mjZfabX3OD9H6z6XG1-22" target="u2mjZfabX3OD9H6z6XG1-30">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="560" y="460" as="sourcePoint" />
+            <mxPoint x="490" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-38" value="interacts" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="365" y="300" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="u2mjZfabX3OD9H6z6XG1-39" value="updates" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="560" y="488" width="70" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

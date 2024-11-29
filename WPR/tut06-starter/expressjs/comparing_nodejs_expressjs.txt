@@ -1,0 +1,11 @@
+Code Complexity:
+- Node.js (Plain): Requires more manual setup, such as handling query parameters and paths manually.
+- Express.js: Less code is needed due to built-in routing and query parameter handling.
+
+Readability:
+- Node.js (Plain): Requires understanding of URL parsing and more lines of code to achieve the same functionality.
+- Express.js: Code is concise, easier to follow, and uses descriptive methods like `app.get` and `req.query`.
+
+Flexibility:
+- Node.js (Plain): Can be more flexible for low-level customization but requires more effort to extend.
+- Express.js: Offers more built-in functionality and is easier to extend with middleware, routing, etc.
